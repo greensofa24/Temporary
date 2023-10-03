@@ -2,28 +2,42 @@
 <html>
 <head>
 <title>Page Title</title>
+<style>
+body {
+overflow: hidden;
+}
+
+canvas {
+position: absolute;
+top: 0;
+left: 0;
+}
+</style>
 </head>
 <body>
 <canvas id="canvas"></canvas>
 <script>
 const canvas = document.getElementById("canvas");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 const ctx = canvas.getContext("2d");
 
 // Create platform
 const platform = new Path2D();
 const button = new Path2D();
 const menu = new Path2D();
+const basic = new Path2D();
+const basicturret = new Path2D();
 platform.rect(20, 20, 50, 50);
-button.rect(20, 100, 100, 30);
-menu.rect();
+button.rect(innerWidth - 135, innerHeight - 50, 100, 30);
+menu.rect(innerWidth - 170, 0, 170, innerHeight);
 ctx.fillStyle = "#777";
 ctx.fill(platform);
-ctx.fillStyle = "#0F0";
-ctx.fill(button);
+ctx.fillStyle = "#F43";
 ctx.font = "25px Comic Sans MS";
 ctx.fillStyle = "#000";
-ctx.fillText("Close", 39, 126);
 var clicked = "#777";
+var selected = false;
 
 // Listen for mouse moves
 canvas.addEventListener("mousemove", (event) => {
@@ -34,11 +48,15 @@ canvas.addEventListener("mousemove", (event) => {
   // Draw platform
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fill(platform);
-  ctx.fillStyle = "#0F0";
+  if(selected) {
+  ctx.fillStyle = "#777";
+  ctx.fill(menu);
+  ctx.fillStyle = "#F43";
   ctx.fill(button);
   ctx.font = "25px Comic Sans MS";
   ctx.fillStyle = "#000";
-  ctx.fillText("Close", 39, 126);
+  ctx.fillText("Close", innerWidth - 116, innerHeight - 25);
+  }
   ctx.fillStyle = clicked;
 });
 
@@ -46,27 +64,37 @@ canvas.addEventListener("click", (event) => {
   // Check whether point is inside platform
   const platformClicked = ctx.isPointInPath(platform, event.offsetX, event.offsetY);
   ctx.fillStyle = platformClicked ? "#999" : ctx.fillStyle;
+  selected = platformClicked ? true : selected;
   clicked = platformClicked ? "#999" : ctx.fillStyle;
   if(ctx.isPointInPath(button, event.offsetX, event.offsetY)) {
   clicked = "#777";
+  selected = false;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fill(platform);
-  ctx.fillStyle = "#0F0";
+  if(selected) {
+  ctx.fillStyle = "#777";
+  ctx.fill(menu);
+  ctx.fillStyle = "#F43";
   ctx.fill(button);
   ctx.font = "25px Comic Sans MS";
   ctx.fillStyle = "#000";
-  ctx.fillText("Close", 39, 126);
+  ctx.fillText("Close", innerWidth - 116, innerHeight - 25);
+  }
   ctx.fillStyle = clicked;
   }
 
   // Draw platform
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fill(platform);
-  ctx.fillStyle = "#0F0";
+  if(selected) {
+  ctx.fillStyle = "#777";
+  ctx.fill(menu);
+  ctx.fillStyle = "#F43";
   ctx.fill(button);
   ctx.font = "25px Comic Sans MS";
   ctx.fillStyle = "#000";
-  ctx.fillText("Close", 39, 126);
+  ctx.fillText("Close", innerWidth - 116, innerHeight - 25);
+  }
   ctx.fillStyle = clicked;
 });
 </script>
