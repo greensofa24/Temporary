@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+body {
+overflow: hidden;
+}
+
+canvas {
+position: absolute;
+top: 0;
+left: 0;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+const canvas = document.getElementById("canvas");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+const ctx = canvas.getContext("2d");
+
+const basic = new Path2D();
+basic.rect(20, 20, 40, 40);
+ctx.fillStyle = "#E55";
+ctx.fill(basic);
+const basicturret = new Path2D();
+basicturret.arc(40, 40, 8, 0, 2 * Math.PI);
+basicturret.rect(36.5, 45, 8, 10);
+ctx.fillStyle = "#D44";
+ctx.fill(basicturret);
+</script>
+
+</body>
+</html>
