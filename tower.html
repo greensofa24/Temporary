@@ -23,12 +23,12 @@ canvas.height = innerHeight;
 const ctx = canvas.getContext("2d");
 
 const basic = new Path2D();
-basic.rect(20, 20, 40, 40);
+const basicturret = new Path2D();
+basic.rect(innerWidth - 150, 25, 40, 40);
+basicturret.arc(innerWidth - 130, 45, 8, 0, 2 * Math.PI);
+basicturret.rect(innerWidth - 134, 50, 8, 10);
 ctx.fillStyle = "#E55";
 ctx.fill(basic);
-const basicturret = new Path2D();
-basicturret.arc(40, 40, 8, 0, 2 * Math.PI);
-basicturret.rect(36.5, 45, 8, 10);
 ctx.fillStyle = "#D44";
 ctx.fill(basicturret);
 </script>
