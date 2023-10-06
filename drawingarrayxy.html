@@ -22,12 +22,32 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 const ctx = canvas.getContext("2d");
 
-var squares = [{x: 0, y: 0, color: "red"}, {x: 50, y: 0, color: "orange"}, {x: 100, y: 0, color: "yellow"}, {x: 150, y: 0, color: "#00EE00"}, {x: 200, y: 0, color: "#7777FF"}, {x: 250, y: 0, color: "#9800FF"}, {x: 300, y: 0, color: "blueviolet"}];
+var squares = [];
+var frame = 0;
 
-for (let i = 0; i < squares.length; i++) {
-ctx.fillStyle = squares[i].color;
-ctx.fillRect(squares[i].x, squares[i].y, 50, 50);
+function component(width, height, color, x, y) {
+this.width = width;
+this.height = height;
+this.x = x;
+this.y = y;
+ctx.fillStyle = color;
+ctx.fillRect(this.x, this.y, this.width, this.height);
 }
+
+function drawsquares(array) {
+for (let i = 0; i < array.length; i++) {
+ctx.fillStyle = array[i].color;
+squares.push(new component(50, 50, array[i].color, array[i].x, array[i].y));
+setInterval(function(){squares[i].y += 1; update(i)}, 10);
+}
+}
+
+function update(i) {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+drawsquares(drawsquares([{x: 0, y: squares[i].y, color: "red"}, {x: 50, y: squares[i].y, color: "orange"}, {x: 100, y: squares[i].y, color: "yellow"}, {x: 150, y: squares[i].y, color: "#00EE00"}, {x: 200, y: squares[i].y, color: "#7777FF"}, {x: 250, y: squares[i].y, color: "#9800FF"}, {x: 300, y: squares[i].y, color: "blueviolet"}]));
+}
+
+drawsquares([{x: 0, y: 0, color: "red"}, {x: 50, y: 0, color: "orange"}, {x: 100, y: 0, color: "yellow"}, {x: 150, y: 0, color: "#00EE00"}, {x: 200, y: 0, color: "#7777FF"}, {x: 250, y: 0, color: "#9800FF"}, {x: 300, y: 0, color: "blueviolet"}]);
 </script>
 
 </body>
