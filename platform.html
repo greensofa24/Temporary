@@ -24,6 +24,7 @@ const ctx = canvas.getContext("2d");
 
 const platform = new Path2D();
 const spawnpoint = new Path2D();
+const path = new Path2D();
 const button = new Path2D();
 const menu = new Path2D();
 const basic = new Path2D();
@@ -31,23 +32,31 @@ const basicturret = new Path2D();
 const basic2 = new Path2D();
 const basicturret2 = new Path2D();
 
-platform.rect(20, 20, 50, 50);
-spawnpoint.rect(20, innerHeight - 70, 50, 50);
+platform.rect(20, 17, 50, 50);
+path.rect(20, 67, 50, 50);
+path.rect(20, 117, 50, 50);
+path.rect(20, 167, 50, 50);
+path.rect(20, 217, 50, 50);
+path.rect(20, 267, 50, 50);
+path.rect(20, 317, 50, 49.5);
+spawnpoint.rect(20, innerHeight - 67, 50, 50);
 button.rect(innerWidth - 135, innerHeight - 50, 100, 30);
 menu.rect(innerWidth - 170, 0, 170, innerHeight);
-basic.rect(innerWidth - 150, 25, 40, 40);
-basicturret.arc(innerWidth - 130, 45, 8, 0, 2 * Math.PI);
-basicturret.rect(innerWidth - 134, 50, 8, 10);
-basic2.rect(25, 25, 40, 40);
-basicturret2.arc(45, 45, 8, 0, 2 * Math.PI);
-basicturret2.rect(41, 50, 8, 10);
+basic.rect(innerWidth - 150, 22, 40, 40);
+basicturret.arc(innerWidth - 130, 43, 8, 0, 2 * Math.PI);
+basicturret.rect(innerWidth - 134, 47, 8, 10);
+basic2.rect(25, 22, 40, 40);
+basicturret2.arc(45, 43, 8, 0, 2 * Math.PI);
+basicturret2.rect(41, 47, 8, 10);
 
-ctx.fillStyle = "#777";
+ctx.fillStyle = "#777777";
 ctx.fill(platform);
-ctx.fillStyle = "#F80";
+ctx.fillStyle = "#67F";
+ctx.fill(path);
+ctx.fillStyle = "#FF8400";
 ctx.fill(spawnpoint);
 
-var clicked = "#777";
+var clicked = "#777777";
 var selected = false;
 var occupied = false;
 var coins = 0;
@@ -71,12 +80,14 @@ ctx.fillText(0, innerWidth / 2 + 20, 40);
 
 canvas.addEventListener("mousemove", (event) => {
   const platformClicked = ctx.isPointInPath(platform, event.offsetX, event.offsetY);
-  ctx.fillStyle = platformClicked ? "#999" : clicked;
+  ctx.fillStyle = platformClicked ? "#999999" : clicked;
 
   // Draw platform
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fill(platform);
-  ctx.fillStyle = "#F80";
+  ctx.fillStyle = "#67F";
+  ctx.fill(path);
+  ctx.fillStyle = "#FF8400";
   ctx.fill(spawnpoint);
   drawHexagon(innerWidth / 2, 30, 15, "#FF0");
   drawHexagon(innerWidth / 2, 30, 10, "#FF9");
@@ -84,7 +95,7 @@ canvas.addEventListener("mousemove", (event) => {
   ctx.fillStyle = "#000";
   ctx.fillText(0, innerWidth / 2 + 20, 40);
   if(selected) {
-  ctx.fillStyle = "#777";
+  ctx.fillStyle = "#777777";
   ctx.fill(menu);
   ctx.fillStyle = "#F43";
   ctx.fill(button);
@@ -107,11 +118,11 @@ canvas.addEventListener("mousemove", (event) => {
 
 canvas.addEventListener("click", (event) => {
   const platformClicked = ctx.isPointInPath(platform, event.offsetX, event.offsetY);
-  ctx.fillStyle = platformClicked ? "#999" : ctx.fillStyle;
+  ctx.fillStyle = platformClicked ? "#999999" : ctx.fillStyle;
   selected = platformClicked ? true : selected;
-  clicked = platformClicked ? "#999" : ctx.fillStyle;
+  clicked = platformClicked ? "#999999" : ctx.fillStyle;
   const buttonClicked = ctx.isPointInPath(button, event.offsetX, event.offsetY);
-  clicked = buttonClicked ? "#777" : ctx.fillStyle;
+  clicked = buttonClicked ? "#777777" : ctx.fillStyle;
   selected = buttonClicked ? false : selected;
   const basicClicked = ctx.isPointInPath(basic, event.offsetX, event.offsetY);
   const basicturretClicked = ctx.isPointInPath(basicturret, event.offsetX, event.offsetY);
@@ -120,7 +131,9 @@ canvas.addEventListener("click", (event) => {
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fill(platform);
-  ctx.fillStyle = "#F80";
+  ctx.fillStyle = "#67F";
+  ctx.fill(path);
+  ctx.fillStyle = "#FF8400";
   ctx.fill(spawnpoint);
   drawHexagon(innerWidth / 2, 30, 15, "#FF0");
   drawHexagon(innerWidth / 2, 30, 10, "#FF9");
@@ -128,7 +141,7 @@ canvas.addEventListener("click", (event) => {
   ctx.fillStyle = "#000";
   ctx.fillText(0, innerWidth / 2 + 20, 40);
   if(selected) {
-  ctx.fillStyle = "#777";
+  ctx.fillStyle = "#777777";
   ctx.fill(menu);
   ctx.fillStyle = "#F43";
   ctx.fill(button);
