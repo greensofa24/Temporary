@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+body {
+overflow: hidden;
+}
+
+canvas {
+position: absolute;
+top: 0;
+left: 0;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+const canvas = document.getElementById("canvas");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+const ctx = canvas.getContext("2d");
+
+var squares = [];
+var frame = 0;
+
+setInterval(function(){update()}, 10);
+
+function component(x, y, width, height, color) {
+this.x = x;
+this.y = y;
+this.width = width;
+this.height = height;
+ctx.fillStyle = color;
+ctx.fillRect(this.x, this.y, this.width, this.height);
+this.draw = function(){ctx.fillStyle = color;
+ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+}
+
+function update() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+frame += 1;
+square.draw();
+square.y += 1;
+if ((frame / 100) % 1 == 0) {
+squares.push(new component(50, 50, 50, 50, "red"));
+}
+for (i = 0; i < squares.length; i += 1) {
+squares[i].y += 1;
+squares[i].draw();
+}
+}
+
+var square = new component(50, 50, 50, 50, "red");
+var squares = [];
+</script>
+
+</body>
+</html>
