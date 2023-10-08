@@ -22,11 +22,53 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 const ctx = canvas.getContext("2d");
 
-function circmake() {
-var circ = new Path2D();
-circ.arc(45, 45, 8, 0, 2 * Math.PI);
-ctx.fillStyle = "#D44";
-ctx.fill(circ);
+var squares = [];
+var frame = 0;
+var occupied = true;
+
+setInterval(function(){update()}, 10);
+
+function rect(x, y, width, height, color) {
+this.x = x;
+this.y = y;
+this.width = width;
+this.height = height;
+ctx.fillStyle = color;
+ctx.fillRect(x, y, width, height);
+this.draw = function(){
+ctx.fillStyle = color;
+ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+}
+
+function arc(x, y, radius, color) {
+this.x = x;
+this.y = y;
+this.radius = radius;
+ctx.fillStyle = color;
+ctx.arc(x, y, radius, 0, 2 * Math.PI);
+ctx.fill();
+this.draw = function(){
+ctx.fillStyle = color;
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+ctx.closePath();
+ctx.fill();
+}
+}
+
+function update() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+frame += 1;
+if (occupied) {
+if ((frame / 150) % 1 == 0) {
+squares.push(new arc(50, 50, 8, "#C44"));
+}
+for (i = 0; i < squares.length; i += 1) {
+squares[i].y += 2;
+squares[i].draw();
+}
+}
 }
 </script>
 
