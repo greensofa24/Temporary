@@ -39,7 +39,7 @@ path.rect(20, 167, 50, 50);
 path.rect(20, 217, 50, 50);
 path.rect(20, 267, 50, 50);
 path.rect(20, 317, 50, 49.5);
-spawnpoint.rect(20, innerHeight - 67, 50, 50);
+spawnpoint.rect(20, 366, 50, 50);
 button.rect(innerWidth - 135, innerHeight - 50, 100, 30);
 menu.rect(innerWidth - 170, 0, 170, innerHeight);
 basic.rect(innerWidth - 150, 22, 40, 40);
@@ -60,37 +60,64 @@ var clicked = "#777777";
 var selected = false;
 var occupied = false;
 var coins = 0;
+var squares = [];
+var frame = 0;
+var platformAbove;
 
-function drawHexagon(x, y, r, c) {
-  var a = Math.PI / 3;
-  ctx.beginPath();
-  for (var i = 0; i < 6; i++) {
-    ctx.lineTo(x + r * Math.cos(a * i), y + r * Math.sin(a * i));
-  }
-  ctx.closePath();
-  ctx.fillStyle = c;
-  ctx.fill();
+setInterval(function(){update()}, 10);
+
+function hexagon(x, y, r, c) {
+var a = Math.PI / 3;
+ctx.beginPath();
+for (var i = 0; i < 6; i++) {
+ctx.lineTo(x + r * Math.cos(a * i), y + r * Math.sin(a * i));
+}
+ctx.closePath();
+ctx.fillStyle = c;
+ctx.fill();
 }
 
-drawHexagon(innerWidth / 2, 30, 15, "#FF0");
-drawHexagon(innerWidth / 2, 30, 10, "#FF9");
-ctx.font = "25px Comic Sans MS";
-ctx.fillStyle = "#000";
-ctx.fillText(0, innerWidth / 2 + 20, 40);
+function rect(x, y, width, height, color) {
+this.x = x;
+this.y = y;
+this.width = width;
+this.height = height;
+ctx.fillStyle = color;
+ctx.fillRect(x, y, width, height);
+this.draw = function(){
+ctx.fillStyle = color;
+ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+}
 
-canvas.addEventListener("mousemove", (event) => {
-  const platformClicked = ctx.isPointInPath(platform, event.offsetX, event.offsetY);
-  ctx.fillStyle = platformClicked ? "#999999" : clicked;
+function arc(x, y, radius, color) {
+this.x = x;
+this.y = y;
+this.radius = radius;
+ctx.fillStyle = color;
+ctx.arc(x, y, radius, 0, 2 * Math.PI);
+ctx.fill();
+this.draw = function(){
+ctx.fillStyle = color;
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+ctx.closePath();
+ctx.fill();
+}
+}
 
-  // Draw platform
+function update() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  frame += 1;
+  ctx.fillStyle = platformAbove ? "#999999" : clicked;
+  ctx.fillStyle = "999999";
   ctx.fill(platform);
   ctx.fillStyle = "#67F";
   ctx.fill(path);
   ctx.fillStyle = "#FF8400";
   ctx.fill(spawnpoint);
-  drawHexagon(innerWidth / 2, 30, 15, "#FF0");
-  drawHexagon(innerWidth / 2, 30, 10, "#FF9");
+  hexagon(innerWidth / 2, 30, 15, "#FF0");
+  hexagon(innerWidth / 2, 30, 10, "#FF9");
   ctx.font = "25px Comic Sans MS";
   ctx.fillStyle = "#000";
   ctx.fillText(0, innerWidth / 2 + 20, 40);
@@ -112,8 +139,31 @@ canvas.addEventListener("mousemove", (event) => {
   ctx.fill(basic2);
   ctx.fillStyle = "#D44";
   ctx.fill(basicturret2);
+  if ((frame / 150) % 1 == 0) {
+  squares.push(new arc(45, 43, 8, "#C44"));
+  }
+  for (i = 0; i < squares.length; i += 1) {
+  squares[i].y += 2;
+  squares[i].draw();
+  }
   }
   ctx.fillStyle = clicked;
+  //squares.push(new arc(50, 50, 8, "#C44"));
+  //for (i = 0; i < squares.length; i += 1) {
+  //squares[i].y += 2;
+  //squares[i].draw();
+  //}
+}
+
+hexagon(innerWidth / 2, 30, 15, "#FF0");
+hexagon(innerWidth / 2, 30, 10, "#FF9");
+ctx.font = "25px Comic Sans MS";
+ctx.fillStyle = "#000";
+ctx.fillText(0, innerWidth / 2 + 20, 40);
+
+canvas.addEventListener("mousemove", (event) => {
+  platformAbove = ctx.isPointInPath(platform, event.offsetX, event.offsetY);
+  update();
 });
 
 canvas.addEventListener("click", (event) => {
@@ -129,37 +179,7 @@ canvas.addEventListener("click", (event) => {
   occupied = basicClicked ? true : occupied;
   occupied = basicturretClicked ? true : occupied;
   
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fill(platform);
-  ctx.fillStyle = "#67F";
-  ctx.fill(path);
-  ctx.fillStyle = "#FF8400";
-  ctx.fill(spawnpoint);
-  drawHexagon(innerWidth / 2, 30, 15, "#FF0");
-  drawHexagon(innerWidth / 2, 30, 10, "#FF9");
-  ctx.font = "25px Comic Sans MS";
-  ctx.fillStyle = "#000";
-  ctx.fillText(0, innerWidth / 2 + 20, 40);
-  if(selected) {
-  ctx.fillStyle = "#777777";
-  ctx.fill(menu);
-  ctx.fillStyle = "#F43";
-  ctx.fill(button);
-  ctx.font = "25px Comic Sans MS";
-  ctx.fillStyle = "#000";
-  ctx.fillText("Close", innerWidth - 116, innerHeight - 25);
-  ctx.fillStyle = "#E55";
-  ctx.fill(basic);
-  ctx.fillStyle = "#D44";
-  ctx.fill(basicturret);
-  }
-  if(occupied) {
-  ctx.fillStyle = "#E55";
-  ctx.fill(basic2);
-  ctx.fillStyle = "#D44";
-  ctx.fill(basicturret2);
-  }
-  ctx.fillStyle = clicked;
+  update();
 });
 </script>
 
