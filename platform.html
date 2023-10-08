@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+<title>In Progress</title>
 <style>
 body {
 overflow: hidden;
@@ -60,7 +60,7 @@ var clicked = "#777777";
 var selected = false;
 var occupied = false;
 var coins = 0;
-var squares = [];
+var circles = [];
 var frame = 0;
 var platformAbove;
 
@@ -140,19 +140,20 @@ function update() {
   ctx.fillStyle = "#D44";
   ctx.fill(basicturret2);
   if ((frame / 150) % 1 == 0) {
-  squares.push(new arc(45, 43, 8, "#C44"));
+  circles.push(new arc(45, 43, 8, "#C44"));
   }
-  for (i = 0; i < squares.length; i += 1) {
-  squares[i].y += 2;
-  squares[i].draw();
+  for (i = 0; i < circles.length; i += 1) {
+  circles[i].y += 2;
+  // if(circles[i].y < spawnpoint.x - circles[i].radius / 2) {
+  // circles[i].radius / 2 = 4
+  // spawnpoint.x doesn't exist so just find x value of spawnpoint
+  // which is 366, 366 - 4 = 362
+  if(circles[i].y < 362) {
+  circles[i].draw();
+  }
   }
   }
   ctx.fillStyle = clicked;
-  //squares.push(new arc(50, 50, 8, "#C44"));
-  //for (i = 0; i < squares.length; i += 1) {
-  //squares[i].y += 2;
-  //squares[i].draw();
-  //}
 }
 
 hexagon(innerWidth / 2, 30, 15, "#FF0");
@@ -163,7 +164,6 @@ ctx.fillText(0, innerWidth / 2 + 20, 40);
 
 canvas.addEventListener("mousemove", (event) => {
   platformAbove = ctx.isPointInPath(platform, event.offsetX, event.offsetY);
-  update();
 });
 
 canvas.addEventListener("click", (event) => {
@@ -178,8 +178,6 @@ canvas.addEventListener("click", (event) => {
   const basicturretClicked = ctx.isPointInPath(basicturret, event.offsetX, event.offsetY);
   occupied = basicClicked ? true : occupied;
   occupied = basicturretClicked ? true : occupied;
-  
-  update();
 });
 </script>
 
