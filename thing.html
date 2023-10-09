@@ -95,9 +95,17 @@ function update() {
   if (grid[i][j - 1]) {
   k += 1;
   }
-  if (k == 2) {
-  grid[i][j]
+  
+  if (grid[i][j] == 1) {
+  if (k != 2) {
+  grid[i][j] = 0;
   }
+  
+  if (k == 3) {
+  grid[i][j] = 1;
+  }
+  }
+  
   }
   }
 }
