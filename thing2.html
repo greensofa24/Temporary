@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Conway's game of life</title>
+<style>
+body {
+overflow: hidden;
+}
+
+canvas {
+position: absolute;
+top: 0;
+left: 0;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+const canvas = document.getElementById("canvas");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+const ctx = canvas.getContext("2d");
+
+setInterval(function(){draw()}, 100);
+
+function rect(x, y, width, height, color) {
+this.x = x;
+this.y = y;
+this.width = width;
+this.height = height;
+ctx.fillStyle = color;
+ctx.fillRect(x, y, width, height);
+this.draw = function(){
+ctx.fillStyle = color;
+ctx.fillRect(this.x, this.y, this.width, this.height);
+}
+}
+
+function arc(x, y, radius, color) {
+this.x = x;
+this.y = y;
+this.radius = radius;
+ctx.fillStyle = color;
+ctx.arc(x, y, radius, 0, 2 * Math.PI);
+ctx.fill();
+this.draw = function(){
+ctx.fillStyle = color;
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+ctx.closePath();
+ctx.fill();
+}
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i in grid) {
+  for (let j in grid[i]) {
+  if (grid[i][j]) {
+  rect(j * 10, i * 10, 10, 10);
+  }
+  }
+  }
+}
+
+function update(row, col) {
+for (let i = -1; i < 2; i++) { //This checks the row above and row below
+if (col + i >= 0 && col + i < gridLn - 1) { // Check for valid column
+if (row > 0 && tableArr[row - 1][col + i] == 1) {
+count++;
+}
+if (row < gridLn - 1 && tableArr[row + 1][col + i] == 1) { 
+count++;
+}
+}
+}
+
+if (col - 1 >= 0 && tableArr[row][col - 1] == 1) { // Check left cell
+count++;
+}
+if (col + 1 < gridLn - 1 && tableArr[row][col + 1] == 1) { // Check right cell
+count++;
+}
+
+return count;
+}
+
+var grid = [[0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1], [1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0]];
+</script>
+
+</body>
+</html>
